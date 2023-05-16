@@ -2,6 +2,15 @@ use ascii::AsciiString;
 
 use crate::rcon::{RconError, RconResult};
 
+pub fn parse_float(word: &AsciiString) -> RconResult<f32> {
+    word.as_str().parse::<f32>().map_err(|_| {
+        RconError::protocol_msg(format!(
+            "Failed to parse: \"{}\" is not an floating point number",
+            word
+        ))
+    })
+}
+
 pub fn parse_int(word: &AsciiString) -> RconResult<i32> {
     word.as_str().parse::<i32>().map_err(|_| {
         RconError::protocol_msg(format!(
