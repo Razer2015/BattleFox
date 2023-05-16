@@ -47,7 +47,7 @@ mod tests {
     #[ignore]
     async fn test_server_info() {
         let bf4 = Bf4Client::connect_restricted(
-            "127.0.0.1:47200",
+            "127.0.0.1:47200", false,
         )
         .await
         .unwrap();
