@@ -1,4 +1,4 @@
-use crate::bf4::util::{parse_int, parse_bool};
+use crate::bf4::util::{parse_float, parse_int, parse_bool};
 use crate::rcon::{RconError, RconResult};
 use ascii::AsciiString;
 use serde::{Deserialize, Serialize};
@@ -6,7 +6,7 @@ use serde::{Deserialize, Serialize};
 use super::{Map, GameMode, RconDecoding};
 
 ///
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct ServerInfo {
     pub server_name: AsciiString,
     pub playercount: i32,
@@ -32,10 +32,10 @@ pub struct ServerInfo {
     pub blaze_game_state: AsciiString,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct TeamScores {
     pub number_of_entries: i32,
-    pub scores: Vec<i32>,
+    pub scores: Vec<f32>,
     pub target_score: i32,
 }
 
@@ -79,9 +79,9 @@ pub fn parse_serverinfo(words: &[AsciiString]) -> RconResult<ServerInfo> {
 
 fn parse_teamscores(words: &[AsciiString], teams_count: usize) -> TeamScores {
     let mut offset = 8;
-    let mut teamscores: Vec<i32> = Vec::new();
+    let mut teamscores: Vec<f32> = Vec::new();
     for _ in 0..teams_count {
-        teamscores.push(parse_int(&words[offset]).unwrap());
+        teamscores.push(parse_float(&words[offset]).unwrap());
 
         offset += 1;
     }
